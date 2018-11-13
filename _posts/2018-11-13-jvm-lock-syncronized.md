@@ -1,3 +1,18 @@
+---
+layout: post
+title: "互斥同步、锁优化及synchronized和volatile"
+subtitle: ''
+author: "DylanYu"
+header-style: text
+tags:
+  - jvm
+  - 互斥同步
+  - 锁
+  - synchronized
+  - volatile
+---
+
+
 ### 互斥同步
 
 互斥同步（Mutual Exclusion & Synchronization）是常见的一种并发正确性保证手段。同步是指子啊多个线程并发访问共享数据时，保证共享数据在同一时刻只能被一个（或者是一些，使用信号量的时候）线程使用。而互斥是实现同步的一种手段，临界区（Critial Section）、互斥量（Mutex）和信号量（Semaphore）都是主要的互斥实现方式。因此，在这四个字里面，互斥是因，同步是果；互斥是方法，同步是目的。
