@@ -1,7 +1,7 @@
 # Site settings
-title: Hux Blog
+title: DylanYu Blog
 SEOTitle: DYLAN YU 的博客 | Hux Blog
-header-img: img/home-bg.jpg
+#header-img: img/home-bg.jpg
 email: 753036576@qq.com
 description: "这里是 @DylanYu 的个人博客"
 keyword: "dylanyu, 博客, 个人网站, 互联网, Web, JavaScript, 前端, 设计"
@@ -78,7 +78,7 @@ netease_comment: false
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "For the next quantum leap<br>离开世界之前，一切都是过程"
+sidebar-about-description: "时光飞逝，抓紧学习"
 #sidebar-avatar: /img/avatar-hux-ny.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
@@ -101,9 +101,9 @@ page-mathjax: false
 
 
 # Friends
-friends: [
+#friends: [
     #{
     #     title: "Su",
     #     href: "http://su.gallery/"
     # }
-]
+#]
