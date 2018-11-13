@@ -5,7 +5,7 @@ subtitle: ''
 author: "DylanYu"
 header-style: text
 tags:
-  - jvm
+  - JVM
   - 互斥同步
   - 锁
   - synchronized
