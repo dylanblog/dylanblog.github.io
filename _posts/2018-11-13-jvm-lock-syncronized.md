@@ -12,7 +12,7 @@ tags:
   - volatile
 ---
 
-[原文地址](http://www.importnew.com/28461.html)
+<a href="http://www.importnew.com/28461.html" target="_blank">原文地址</a>
 
 ### 互斥同步
 
