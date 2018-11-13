@@ -12,6 +12,7 @@ tags:
   - volatile
 ---
 
+[原文地址](http://www.importnew.com/28461.html)
 
 ### 互斥同步
 
