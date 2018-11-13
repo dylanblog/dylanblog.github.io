@@ -12,7 +12,7 @@ tags:
 <a href="http://www.importnew.com/25295.html" target="_blank">原文地址</a>
 
 如下图所示，JVM类加载机制分为五个部分：加载，验证，准备，解析，初始化，下面我们就分别来看一下这五个过程。
-![image](../img/in-post/post_20181113_class_loader.png)
+![image](https://dylanblog.github.io/img/in-post/post_20181113_class_loader.png)
 加载
 
 加载是类加载过程中的一个阶段，这个阶段会在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的入口。注意这里不一定非得要从一个Class文件获取，这里既可以从ZIP包中读取（比如从jar包和war包中读取），也可以在运行时计算生成（动态代理），也可以由其它文件生成（比如将JSP文件转换成对应的Class类）。
@@ -72,7 +72,7 @@ public static final int v = 8080;
     应用程序类加载器(Application ClassLoader)：负责加载用户路径（classpath）上的类库。
 
 JVM通过双亲委派模型进行类的加载，当然我们也可以通过继承java.lang.ClassLoader实现自定义的类加载器。
-![image](../img/in-post/post_20181113_class_loader_2.png)
+![image](https://dylanblog.github.io/img/in-post/post_20181113_class_loader_2.png)
 当一个类加载器收到类加载任务，会先交给其父类加载器去完成，因此最终加载任务都会传递到顶层的启动类加载器，只有当父类加载器无法完成加载任务时，才会尝试执行加载任务。
 
 采用双亲委派的一个好处是比如加载位于rt.jar包中的类java.lang.Object，不管是哪个加载器加载这个类，最终都是委托给顶层的启动类加载器进行加载，这样就保证了使用不同的类加载器最终得到的都是同样一个Object对象。
