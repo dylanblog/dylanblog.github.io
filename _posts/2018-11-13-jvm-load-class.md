@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "2018-11-13-jvm-lock-syncronized.md"
+title: "JVM 类加载机制详解"
 subtitle: ''
 author: "DylanYu"
 header-style: text
