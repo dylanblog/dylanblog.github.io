@@ -13,10 +13,10 @@ future: true
 
 # SNS settings
 RSS: false
-weibo_username:     dylanyu
-zhihu_username:     dylanyu
-github_username:    dylanyu
-twitter_username:   dylanyu
+#weibo_username:     dylanyu
+#zhihu_username:     dylanyu
+#github_username:    dylanyu
+#twitter_username:   dylanyu
 #facebook_username:  huxpro
 #linkedin_username:  firstname-lastname-idxxxx
 
