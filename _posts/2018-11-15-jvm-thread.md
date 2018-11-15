@@ -1,10 +1,11 @@
 ---
 layout: post
-title: "垃圾收集器与内存分配策略"
+title: "Java线程的6种状态及切换"
 subtitle: ''
 author: "DylanYu"
 header-style: text
 tags:
+  - Java
   - JVM
   - Thread
   - BLOCKED
