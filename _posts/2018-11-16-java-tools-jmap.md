@@ -67,6 +67,7 @@ PS Perm Generation   
 ```
 
 - -histo 生成类的统计报表
+
 jmap -histo pid
 
 ```
@@ -99,6 +100,7 @@ MacBook-Pro:~ yuwei$ jmap -histo 33053
   23:           265          21200  java.lang.reflect.Constructor
   24:           518          20720  java.util.LinkedHashMap$Entry
 ```
+
 统计信息中类型如果下：
 
  baseType| Type
