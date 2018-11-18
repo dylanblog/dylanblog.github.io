@@ -12,7 +12,7 @@ tags:
 
 #### jmap
 - 分析 JAVA Application的内存使用时，jmap是一个很实用的轻量级工具，可使用jmap查看heap概要情况，初略分析内存使用情况
-- map可用于生产heap dump文件
+- jmap可用于生产heap dump文件
 
 ##### 常用参数
 - -heap 打印heap使用概要，可粗略的查看内存使用情况
