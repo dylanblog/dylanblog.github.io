@@ -104,7 +104,7 @@ MacBook-Pro:~ yuwei$ jmap -histo 33053
 统计信息中类型如果下：
 
  baseType| Type
- ----|---
+ ---|---
     B|byte
     C|char
     D|double
