@@ -132,3 +132,10 @@ MacBook-Pro:~ yuwei$ jmap -histo 33053
 在ubuntu中第一次使用jmap会报错：Error attaching to process: sun.jvm.hotspot.debugger.DebuggerException: Can't attach to the process，这是oracla文档中提到的一个bug:http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7050524,解决方式如下：
 echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope 该方法在下次重启前有效。
 永久有效方法 sudo vi /etc/sysctl.d/10-ptrace.conf 编辑下面这行: kernel.yama.ptrace_scope = 1 修改为: kernel.yama.ptrace_scope = 0 重启系统，使修改生效。
+
+
+**如果GC执行时间满足下面所有的条件，就意味着无需进行GC优化了。**
+- Minor GC执行的很快（小于50ms）
+- Minor GC执行的并不频繁（大概10秒一次）
+- Full GC执行的很快（小于1s）
+- Full GC执行的并不频繁（10分钟一次）
