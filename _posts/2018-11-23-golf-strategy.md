@@ -29,3 +29,7 @@ InstantiationStrategy -> SimpleInstantiationStrategy
     1. 定义一个IPayStrategy接口，定义prePay和callback两个接口
     2. 根据各个支付方式实现具体的支付类：WxPayStrategy，AliPayStrategy，UnionPayStrategy
     3. 创建一个PayService组合各种支付类型，供调用方使用
+
+> 1. 在简单工厂模式中我们只需要传递相应的条件就能得到想要的一个对象，然后通过这个对象实现算法的操作。
+> 2. 策略模式，使用时必须首先创建一个想使用的类对象，然后将该对象作为参数传递进去，通过该对象调用不同的算法
+> 3. 在简单工厂模式中实现了通过条件选取一个类去实例化对象，策略模式则将选取相应对象的工作交给模式的使用者，它本身不去做选取工作。
