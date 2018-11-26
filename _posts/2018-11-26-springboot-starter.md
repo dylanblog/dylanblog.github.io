@@ -16,7 +16,7 @@ tags:
   - ConditionalOnJava
   - ConditionalOnJndi
   - ConditionalOnMissingBean
-  - ConditionalOnMissingClass:
+  - ConditionalOnMissingClass
   - ConditionalOnNotWebApplication
   - ConditionalOnProperty
   - ConditionalOnResource
