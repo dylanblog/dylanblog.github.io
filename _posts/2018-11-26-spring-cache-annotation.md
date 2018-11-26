@@ -170,7 +170,7 @@ public User find(Integer id) {
 ```
 
 #### 1.5 使用自定义注解
-  pring允许我们在配置可缓存的方法时使用自定义的注解，前提是自定义的注解上必须使用对应的注解进行标注。如我们有如下这么一个使用@Cacheable进行标注的自定义注解。
+  Spring允许我们在配置可缓存的方法时使用自定义的注解，前提是自定义的注解上必须使用对应的注解进行标注。如我们有如下这么一个使用@Cacheable进行标注的自定义注解。
 
 ```
 @Target({ElementType.TYPE, ElementType.METHOD})
