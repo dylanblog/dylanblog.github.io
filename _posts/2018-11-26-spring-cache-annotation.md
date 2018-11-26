@@ -45,13 +45,13 @@ condition	|缓存的条件，可以为空，使用 SpEL 编写，返回 true 或
 
 ```
 @Cacheable("cache1")//Cache是发生在cache1上的
-   public User find(Integer id) {
-      returnnull;
-   }
-  @Cacheable({"cache1", "cache2"})//Cache是发生在cache1和cache2上的
-   public User find(Integer id) {
-      returnnull;
-   }
+public User find(Integer id) {
+   returnnull;
+}
+@Cacheable({"cache1", "cache2"})//Cache是发生在cache1和cache2上的
+public User find(Integer id) {
+   returnnull;
+}
 ```
 ##### 1.1.2 使用key属性自定义key
   key属性是用来指定Spring缓存方法的返回结果时对应的key的。该属性支持SpringEL表达式。当我们没有指定该属性时，Spring将使用默认策略生成key。我们这里先来看看自定义策略，至于默认策略会在后文单独介绍。
@@ -62,25 +62,25 @@ condition	|缓存的条件，可以为空，使用 SpEL 编写，返回 true 或
 * key 是指传入时的参数
 *
 */
-   @Cacheable(value="users", key="#id")
-   public User find(Integer id) {
-      returnnull;
-   }
+@Cacheable(value="users", key="#id")
+public User find(Integer id) {
+   return null;
+}
 // 表示第一个参数
-  @Cacheable(value="users", key="#p0")
-   public User find(Integer id) {
-      returnnull;
-   }
+@Cacheable(value="users", key="#p0")
+public User find(Integer id) {
+   return null;
+}
 // 表示User中的id值
-   @Cacheable(value="users", key="#user.id")
-   public User find(User user) {
-      returnnull;
-   }
- // 表示第一个参数里的id属性值
-   @Cacheable(value="users", key="#p0.id")
-   public User find(User user) {
-      returnnull;
-   }
+@Cacheable(value="users", key="#user.id")
+public User find(User user) {
+   return null;
+}
+// 表示第一个参数里的id属性值
+@Cacheable(value="users", key="#p0.id")
+public User find(User user) {
+   return null;
+}
 ```
 
 除了上述使用方法参数作为key之外，Spring还为我们提供了一个root对象可以用来生成key。通过该root对象我们可以获取到以下信息。
@@ -96,11 +96,11 @@ caches|当前被调用的方法使用的Cache|#root.caches[0].name
 
 当我们要使用root对象的属性作为key时我们也可以将“#root”省略，因为Spring默认使用的就是root对象的属性。如：
 ```
-    // key值为: user中的name属性的值
-   @Cacheable(value={"users", "xxx"}, key="caches[1].name")
-   public User find(User user) {
-      returnnull;
-   }
+// key值为: user中的name属性的值
+@Cacheable(value={"users", "xxx"}, key="caches[1].name")
+public User find(User user) {
+   returnnull;
+}
 ```
 ##### 1.1.3  condition属性指定发生的条件
 有的时候我们可能并不希望缓存一个方法所有的返回结果。通过condition属性可以实现这一功能。condition属性默认为空，表示将缓存所有的调用情形。
@@ -108,12 +108,12 @@ caches|当前被调用的方法使用的Cache|#root.caches[0].name
 如下示例表示只有当user的id为偶数时才会进行缓存。
 
 ```
-    // 根据条件判断是否缓存
-   @Cacheable(value={"users"}, key="#user.id", condition="#user.id%2==0")
-   public User find(User user) {
-      System.out.println("find user by user " + user);
-      return user;
-   }
+ // 根据条件判断是否缓存
+@Cacheable(value={"users"}, key="#user.id", condition="#user.id%2==0")
+public User find(User user) {
+   System.out.println("find user by user " + user);
+   return user;
+}
 ```
 
 ####  1.2 @CachePut
@@ -122,11 +122,11 @@ caches|当前被调用的方法使用的Cache|#root.caches[0].name
   @CachePut标注的方法在执行前不会去检查缓存中是否存在之前执行过的结果，而是每次都会执行该方法，并将执行结果以键值对的形式存入指定的缓存中。
 
  ```
-   //@CachePut也可以标注在类上和方法上。使用@CachePut时我们可以指定的属性跟@Cacheable是一样的。
-   @CachePut("users")//每次都会执行方法，并将结果存入指定的缓存中
-   public User find(Integer id) {
-      returnnull;
-   }
+//@CachePut也可以标注在类上和方法上。使用@CachePut时我们可以指定的属性跟@Cacheable是一样的。
+@CachePut("users")//每次都会执行方法，并将结果存入指定的缓存中
+public User find(Integer id) {
+   returnnull;
+}
 ```
 
 #### 1.3 @CacheEvict
@@ -138,10 +138,10 @@ caches|当前被调用的方法使用的Cache|#root.caches[0].name
   allEntries是boolean类型，表示是否需要清除缓存中的所有元素。默认为false，表示不需要。当指定了allEntries为true时，Spring Cache将忽略指定的key。有的时候我们需要Cache一下清除所有的元素，这比一个一个清除元素更有效率。
 
 ```
-  @CacheEvict(value="users", allEntries=true)
-   public void delete(Integer id) {
-      System.out.println("delete user by id: " + id);
-   }
+@CacheEvict(value="users", allEntries=true)
+public void delete(Integer id) {
+   System.out.println("delete user by id: " + id);
+}
 ```
 
 #### 1.3.2  beforeInvocation属性
@@ -149,10 +149,10 @@ caches|当前被调用的方法使用的Cache|#root.caches[0].name
   当我们指定该属性值为true时，Spring会在调用该方法之前清除缓存中的指定元素。
 
 ```
-   @CacheEvict(value="users", beforeInvocation=true)
-   public void delete(Integer id) {
-      System.out.println("delete user by id: " + id);
-   }
+@CacheEvict(value="users", beforeInvocation=true)
+public void delete(Integer id) {
+   System.out.println("delete user by id: " + id);
+}
 ```
 
   其实除了使用@CacheEvict清除缓存元素外，当我们使用Ehcache作为实现时，我们也可以配置Ehcache自身的驱除策略，其是通过Ehcache的配置文件来指定的。
@@ -162,11 +162,11 @@ caches|当前被调用的方法使用的Cache|#root.caches[0].name
   @Caching注解可以让我们在一个方法或者类上同时指定多个Spring Cache相关的注解。其拥有三个属性：cacheable、put和evict，分别用于指定@Cacheable、@CachePut和@CacheEvict。
 
 ```
-   @Caching(cacheable = @Cacheable("users"), evict = { @CacheEvict("cache2"),
-   @CacheEvict(value = "cache3", allEntries = true) })
-   public User find(Integer id) {
-      returnnull;
-   }
+@Caching(cacheable = @Cacheable("users"), evict = { @CacheEvict("cache2"),
+@CacheEvict(value = "cache3", allEntries = true) })
+public User find(Integer id) {
+   return null;
+}
 ```
 #### 1.5 使用自定义注解
   pring允许我们在配置可缓存的方法时使用自定义的注解，前提是自定义的注解上必须使用对应的注解进行标注。如我们有如下这么一个使用@Cacheable进行标注的自定义注解。
@@ -182,14 +182,14 @@ public @interface MyCacheable {
 那么在我们需要缓存的方法上使用@MyCacheable进行标注也可以达到同样的效果。
 
 ```
-   @MyCacheable
-   public User findById(Integer id) {
-      System.out.println("find user by id: " + id);
-      User user = new User();
-      user.setId(id);
-      user.setName("Name" + id);
-      return user;
-   }
+@MyCacheable
+public User findById(Integer id) {
+   System.out.println("find user by id: " + id);
+   User user = new User();
+   user.setId(id);
+   user.setName("Name" + id);
+   return user;
+}
 ```
 
 参数|	解释	|example
