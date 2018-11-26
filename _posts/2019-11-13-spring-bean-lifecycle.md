@@ -1,5 +1,6 @@
 ---
-layout: Spring Bean生命周期"
+layout: post
+title: "Spring Bean生命周期"
 subtitle: ''
 author: "DylanYu"
 header-style: text
