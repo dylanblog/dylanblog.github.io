@@ -9,7 +9,19 @@ tags:
   - Springboot
   - Starter
   - spring.factories
-  - @EnableAutoConfiguration
+  - EnableAutoConfiguration
+  - ConditionalOnBean
+  - ConditionalOnClass
+  - ConditionalOnExpression
+  - ConditionalOnJava
+  - ConditionalOnJndi
+  - ConditionalOnMissingBean
+  - ConditionalOnMissingClass:
+  - ConditionalOnNotWebApplication
+  - ConditionalOnProperty
+  - ConditionalOnResource
+  - ConditionalOnSingleCandidate
+  - ConditionalOnWebApplication
 ---
 
 <a href="https://www.cnblogs.com/leihuazhe/p/7743479.html" target="_blank">参考文章</a>
