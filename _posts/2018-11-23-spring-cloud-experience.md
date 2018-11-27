@@ -12,6 +12,8 @@ tags:
 
 <a href="https://juejin.im/post/5be99a68e51d4511a8090440" target="_blank">原文地址</a>
 
+https://www.fangzhipeng.com/archive/
+
 ### 目录
 - 概述
 - 业务场景
