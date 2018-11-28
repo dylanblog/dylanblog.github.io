@@ -44,8 +44,9 @@ Maven依赖(使用curator的版本：2.12.0，对应Zookeeper的版本为：3.4.
 ```
 #### Curator的基本Api
 
-创建会话
-1.使用静态工程方法创建客户端
+#### 创建会话
+
+##### 1.使用静态工程方法创建客户端
 
 一个例子如下：
 
@@ -57,8 +58,8 @@ CuratorFrameworkFactory.newClient(
                         5000,
                         3000,
                         retryPolicy);
-newClient静态工厂方法包含四个主要参数：
 ```
+newClient静态工厂方法包含四个主要参数：
 
 参数名|	说明
 ---|---
@@ -67,7 +68,8 @@ retryPolicy|	重试策略,内建有四种重试策略,也可以自行实现Retry
 sessionTimeoutMs|	会话超时时间，单位毫秒，默认60000ms
 connectionTimeoutMs|	连接创建超时时间，单位毫秒，默认60000ms
 
-2.使用Fluent风格的Api创建会话
+##### 2.使用Fluent风格的Api创建会话
+
 核心参数变为流式设置，一个列子如下：
 ```
  RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
@@ -80,8 +82,11 @@ connectionTimeoutMs|	连接创建超时时间，单位毫秒，默认60000ms
          .build();
 ```
 
-3.创建包含隔离命名空间的会话
-为了实现不同的Zookeeper业务之间的隔离，需要为每个业务分配一个独立的命名空间（NameSpace），即指定一个Zookeeper的根路径（官方术语：为Zookeeper添加“Chroot”特性）。例如（下面的例子）当客户端指定了独立命名空间为“/base”，那么该客户端对Zookeeper上的数据节点的操作都是基于该目录进行的。通过设置Chroot可以将客户端应用与Zookeeper服务端的一课子树相对应，在多个应用共用一个Zookeeper集群的场景下，这对于实现不同应用之间的相互隔离十分有意义。
+##### 3.创建包含隔离命名空间的会话
+
+为了实现不同的Zookeeper业务之间的隔离，需要为每个业务分配一个独立的命名空间（NameSpace），即指定一个Zookeeper的根路径（官方术语：为Zookeeper添加“Chroot”特性）。
+例如（下面的例子）当客户端指定了独立命名空间为“/base”，那么该客户端对Zookeeper上的数据节点的操作都是基于该目录进行的。通过设置Chroot可以将客户端应用与Zookeeper服务端的一课子树相对应，
+在多个应用共用一个Zookeeper集群的场景下，这对于实现不同应用之间的相互隔离十分有意义。
 
 ```
 RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
@@ -119,7 +124,7 @@ client.create().forPath("path");
 注意：如果没有设置节点属性，节点创建模式默认为持久化节点，内容默认为空
 ```
 
-创建一个节点，附带初始化内容
+**创建一个节点，附带初始化内容**
 
 ```
 client.create().forPath("path","init".getBytes());
@@ -137,7 +142,7 @@ client.create()
       .forPath("path","init".getBytes());
 ```
 
-这个creatingParentContainersIfNeeded()接口非常有用，因为一般情况开发人员在创建一个子节点必须判断它的父节点是否存在，
+这个**creatingParentContainersIfNeeded()**接口非常有用，因为一般情况开发人员在创建一个子节点必须判断它的父节点是否存在，
 如果不存在直接创建会抛出NoNodeException，使用creatingParentContainersIfNeeded()之后Curator能够自动递归创建所有所需的父节点。
 
 ##### 删除数据节点
@@ -147,18 +152,27 @@ client.create()
 ```
 client.delete().forPath("path");
 注意，此方法只能删除叶子节点，否则会抛出异常。
+```
 
 删除一个节点，并且递归删除其所有的子节点
 
+```
 client.delete().deletingChildrenIfNeeded().forPath("path");
+```
+
 删除一个节点，强制指定版本进行删除
 
+```
 client.delete().withVersion(10086).forPath("path");
+```
+
 删除一个节点，强制保证删除
 
-client.delete().guaranteed().forPath("path");
-guaranteed()接口是一个保障措施，只要客户端会话有效，那么Curator会在后台持续进行删除操作，直到删除节点成功。
 ```
+client.delete().guaranteed().forPath("path");
+```
+
+guaranteed()接口是一个保障措施，只要客户端会话有效，那么Curator会在后台持续进行删除操作，直到删除节点成功。
 
 注意：上面的多个流式接口是可以自由组合的，例如：
 
@@ -173,9 +187,11 @@ client.delete().guaranteed().deletingChildrenIfNeeded().withVersion(10086).forPa
 ```
 client.getData().forPath("path");
 注意，此方法返的返回值是byte[ ];
+```
 
 读取一个节点的数据内容，同时获取到该节点的stat
 
+```
 Stat stat = new Stat();
 client.getData().storingStatIn(stat).forPath("path");
 ```
@@ -187,15 +203,24 @@ client.getData().storingStatIn(stat).forPath("path");
 ```
 client.setData().forPath("path","data".getBytes());
 注意：该接口会返回一个Stat实例
+```
 
 更新一个节点的数据内容，强制指定版本进行更新
 
+```
 client.setData().withVersion(10086).forPath("path","data".getBytes());
+```
+
 检查节点是否存在
+
+```
 client.checkExists().forPath("path");
 注意：该方法返回一个Stat实例，用于检查ZNode是否存在的操作. 可以调用额外的方法(监控或者后台处理)并在最后调用forPath( )指定要操作的ZNode
+```
 
 获取某个节点的所有子节点路径
+
+```
 client.getChildren().forPath("path");
 注意：该方法的返回值为List<String>,获得ZNode的子节点Path列表。 可以调用额外的方法(监控、后台处理或者获取状态watch, background or get stat) 并在最后调用forPath()指定要操作的父ZNode
 ```
