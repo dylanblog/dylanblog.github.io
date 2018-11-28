@@ -263,3 +263,7 @@ name is :jack
 destory被调用
 myDestroy被调用
 ```
+
+> 当scope=”prototype”时，容器也会延迟初始化 bean，Spring 读取xml 文件的时候，并不会立刻创建对象，而是在第一次请求该 bean 时才初始化（如调用getBean方法时）。
+> 在第一次请求每一个 prototype 的bean 时，Spring容器都会调用其构造器创建这个对象，然后调用init-method属性值中所指定的方法。对象销毁的时候，**Spring 容器不会帮我们调用任何方法，**
+> **因为是非单例，这个类型的对象有很多个，Spring容器一旦把这个对象交给你之后，就不再管理这个对象了。**
