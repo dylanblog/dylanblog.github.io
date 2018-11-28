@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "<context:annotation-config> vs <context:component-scan>"
+title: "context:annotation-config vs context:component-scan"
 subtitle: ''
 author: "DylanYu"
 header-style: text
