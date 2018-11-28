@@ -122,90 +122,90 @@ public class EnableAutoConfigurationImportSelector
 找到selectImports()方法，他调用了getCandidateConfigurations()方法，在这里，这个方法又调用了Spring Core包中的loadFactoryNames()方法。这个方法的作用是，会查询META-INF/spring.factories文件中包含的JAR文件。
 
 ```java
-    @Override
-	public String[] selectImports(AnnotationMetadata annotationMetadata) {
-		if (!isEnabled(annotationMetadata)) {
-			return NO_IMPORTS;
-		}
-		try {
-			AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader
-					.loadMetadata(this.beanClassLoader);
-			AnnotationAttributes attributes = getAttributes(annotationMetadata);
-			List<String> configurations = getCandidateConfigurations(annotationMetadata,
-					attributes);
-			configurations = removeDuplicates(configurations);
-			configurations = sort(configurations, autoConfigurationMetadata);
-			Set<String> exclusions = getExclusions(annotationMetadata, attributes);
-			checkExcludedClasses(configurations, exclusions);
-			configurations.removeAll(exclusions);
-			configurations = filter(configurations, autoConfigurationMetadata);
-			fireAutoConfigurationImportEvents(configurations, exclusions);
-			return configurations.toArray(new String[configurations.size()]);
-		}
-		catch (IOException ex) {
-			throw new IllegalStateException(ex);
-		}
+@Override
+public String[] selectImports(AnnotationMetadata annotationMetadata) {
+	if (!isEnabled(annotationMetadata)) {
+		return NO_IMPORTS;
 	}
+	try {
+		AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader
+				.loadMetadata(this.beanClassLoader);
+		AnnotationAttributes attributes = getAttributes(annotationMetadata);
+		List<String> configurations = getCandidateConfigurations(annotationMetadata,
+				attributes);
+		configurations = removeDuplicates(configurations);
+		configurations = sort(configurations, autoConfigurationMetadata);
+		Set<String> exclusions = getExclusions(annotationMetadata, attributes);
+		checkExcludedClasses(configurations, exclusions);
+		configurations.removeAll(exclusions);
+		configurations = filter(configurations, autoConfigurationMetadata);
+		fireAutoConfigurationImportEvents(configurations, exclusions);
+		return configurations.toArray(new String[configurations.size()]);
+	}
+	catch (IOException ex) {
+		throw new IllegalStateException(ex);
+	}
+}
 ```
 当找到spring.factories文件后，SpringFactoriesLoader将查询配置文件命名的属性。
 
 ```java
-    /**
-	 * Return the auto-configuration class names that should be considered. By default
-	 * this method will load candidates using {@link SpringFactoriesLoader} with
-	 * {@link #getSpringFactoriesLoaderFactoryClass()}.
-	 * @param metadata the source metadata
-	 * @param attributes the {@link #getAttributes(AnnotationMetadata) annotation
-	 * attributes}
-	 * @return a list of candidate configurations
-	 */
-	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata,
-			AnnotationAttributes attributes) {
-		List<String> configurations = SpringFactoriesLoader.loadFactoryNames(
-				getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader());
-		Assert.notEmpty(configurations,
-				"No auto configuration classes found in META-INF/spring.factories. If you "
-						+ "are using a custom packaging, make sure that file is correct.");
-		return configurations;
-	}
+/**
+ * Return the auto-configuration class names that should be considered. By default
+ * this method will load candidates using {@link SpringFactoriesLoader} with
+ * {@link #getSpringFactoriesLoaderFactoryClass()}.
+ * @param metadata the source metadata
+ * @param attributes the {@link #getAttributes(AnnotationMetadata) annotation
+ * attributes}
+ * @return a list of candidate configurations
+ */
+protected List<String> getCandidateConfigurations(AnnotationMetadata metadata,
+		AnnotationAttributes attributes) {
+	List<String> configurations = SpringFactoriesLoader.loadFactoryNames(
+			getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader());
+	Assert.notEmpty(configurations,
+			"No auto configuration classes found in META-INF/spring.factories. If you "
+					+ "are using a custom packaging, make sure that file is correct.");
+	return configurations;
+}
 ```
 
 ```java
-    /**
-	 * Load the fully qualified class names of factory implementations of the
-	 * given type from {@value #FACTORIES_RESOURCE_LOCATION}, using the given
-	 * class loader.
-	 * @param factoryClass the interface or abstract class representing the factory
-	 * @param classLoader the ClassLoader to use for loading resources; can be
-	 * {@code null} to use the default
-	 * @see #loadFactories
-	 * @throws IllegalArgumentException if an error occurs while loading factory names
-	 */
-	public static List<String> loadFactoryNames(Class<?> factoryClass, ClassLoader classLoader) {
-		String factoryClassName = factoryClass.getName();
-		try {
-			Enumeration<URL> urls = (classLoader != null ? classLoader.getResources(FACTORIES_RESOURCE_LOCATION) :
-					ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION));
-			List<String> result = new ArrayList<String>();
-			while (urls.hasMoreElements()) {
-				URL url = urls.nextElement();
-				Properties properties = PropertiesLoaderUtils.loadProperties(new UrlResource(url));
-				String factoryClassNames = properties.getProperty(factoryClassName);
-				result.addAll(Arrays.asList(StringUtils.commaDelimitedListToStringArray(factoryClassNames)));
-			}
-			return result;
+/**
+ * Load the fully qualified class names of factory implementations of the
+ * given type from {@value #FACTORIES_RESOURCE_LOCATION}, using the given
+ * class loader.
+ * @param factoryClass the interface or abstract class representing the factory
+ * @param classLoader the ClassLoader to use for loading resources; can be
+ * {@code null} to use the default
+ * @see #loadFactories
+ * @throws IllegalArgumentException if an error occurs while loading factory names
+ */
+public static List<String> loadFactoryNames(Class<?> factoryClass, ClassLoader classLoader) {
+	String factoryClassName = factoryClass.getName();
+	try {
+		Enumeration<URL> urls = (classLoader != null ? classLoader.getResources(FACTORIES_RESOURCE_LOCATION) :
+				ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION));
+		List<String> result = new ArrayList<String>();
+		while (urls.hasMoreElements()) {
+			URL url = urls.nextElement();
+			Properties properties = PropertiesLoaderUtils.loadProperties(new UrlResource(url));
+			String factoryClassNames = properties.getProperty(factoryClassName);
+			result.addAll(Arrays.asList(StringUtils.commaDelimitedListToStringArray(factoryClassNames)));
 		}
-		catch (IOException ex) {
-			throw new IllegalArgumentException("Unable to load [" + factoryClass.getName() +
-					"] factories from location [" + FACTORIES_RESOURCE_LOCATION + "]", ex);
-		}
+		return result;
 	}
+	catch (IOException ex) {
+		throw new IllegalArgumentException("Unable to load [" + factoryClass.getName() +
+				"] factories from location [" + FACTORIES_RESOURCE_LOCATION + "]", ex);
+	}
+}
 
-	/**
-    * The location to look for factories.
-    * <p>Can be present in multiple JAR files.
-    */
-   public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/spring.factories";
+/**
+ * The location to look for factories.
+ * <p>Can be present in multiple JAR files.
+ */
+public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/spring.factories";
 ```
 
 Jar文件在org.springframework.boot.autoconfigure的spring.factories
@@ -323,10 +323,10 @@ Spring-boot 1.5.2版本之后，采用下面这种方式
 @PropertySource("classpath:may.properties")
 @ConfigurationProperties(prefix="may")
 public class User2 {
-        private String name;
-        private String gender;
-       //省略setter,getter方法
-    }
+    private String name;
+    private String gender;
+   //省略setter,getter方法
+}
 ```
 
 @EnableConfigurationProperties
@@ -334,14 +334,14 @@ public class User2 {
 最后注意在spring Boot入口类加上@EnableConfigurationProperties
 
 ```
-    @SpringBootApplication
-    @EnableConfigurationProperties({User.class,User2.class})
-    public class DemoApplication {
+@SpringBootApplication
+@EnableConfigurationProperties({User.class,User2.class})
+public class DemoApplication {
 
-        public static void main(String[] args) {
-            SpringApplication.run(DemoApplication.class, args);
-        }
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
     }
+}
 ```
 其实这里@EnableConfigurationProperties({User.class,User2.class}) 可以省略
 
