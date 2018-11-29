@@ -30,22 +30,25 @@ tags:
 ```
 public static int v = 8080;
 ```
+
 实际上变量v在准备阶段过后的初始值为0而不是8080，将v赋值为8080的putstatic指令是程序被编译后，存放于类构造器<client>方法之中，这里我们后面会解释。
+
 但是注意如果声明为：
 
 ```
 public static final int v = 8080;
 ```
+
 在编译阶段会为v生成ConstantValue属性，在准备阶段虚拟机会根据ConstantValue属性将v赋值为8080。
 
 ##### 解析
+
     解析阶段是指虚拟机将常量池中的符号引用替换为直接引用的过程。符号引用就是class文件中的：
+    - CONSTANT_Class_info
+    - CONSTANT_Field_info
+    - CONSTANT_Method_info
 
-- CONSTANT_Class_info
-- CONSTANT_Field_info
-- CONSTANT_Method_info
-
-等类型的常量。
+    等类型的常量。
 
 下面我们解释一下符号引用和直接引用的概念：
 
