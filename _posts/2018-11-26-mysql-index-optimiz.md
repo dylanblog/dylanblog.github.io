@@ -11,6 +11,7 @@ tags:
 
 <a href="https://www.cnblogs.com/LBSer/p/5183300.html" target="_blank">参考文章</a>
 
+https://mp.weixin.qq.com/s?__biz=MzU4NDQ4MzU5OA==&mid=2247484486&idx=1&sn=215450f11e042bca8a58eac9f4a97686&chksm=fd985227caefdb3117b8375f150676f5824aa20d1ebfdbcfb93ff06e23e26efbafae6cf6b48e&scene=21#wechat_redirect
 
 ### 如何尽可能避免死锁
 1）以固定的顺序访问表和行。比如对第2节两个job批量更新的情形，简单方法是对id列表先排序，后执行，这样就避免了交叉等待锁的情形；又比如对于3.1节的情形，将两个事务的sql顺序调整为一致，也能避免死锁。
