@@ -394,7 +394,7 @@ Syntax:	proxy_cache zone | off;
 Default:
 proxy_cache off;
 Context:	http, server, location
-复制代码proxy_cache_path
+proxy_cache_path
 Syntax:	proxy_cache_path path [levels=levels] [use_temp_path=on|off] keys_zone=name:size [inactive=time] [max_size=size] [manager_files=number] [manager_sleep=time] [manager_threshold=time] [loader_files=number] [loader_sleep=time] [loader_threshold=time] [purger=on|off] [purger_files=number] [purger_sleep=time] [purger_threshold=time];
 Default:	—
 Context:	http
