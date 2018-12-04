@@ -155,7 +155,6 @@ nginx日志目录
 #### 3.3 Nginx 默认配置语法
 
 
-
 参数|说明
 ---|---
 user|设置nginx服务的系统使用用户
@@ -229,7 +228,7 @@ systemctl restart nginx.service
 #### 检查 nginx 配置，结果出现 successful 表示成功
 ```
 nginx -t -c /etc/nginx/nginx.conf
-复制代码重新加载配置
+重新加载配置
 nginx -s reload -c /etc/nginx/nginx.conf
 ```
 
@@ -366,6 +365,7 @@ server {
 ```
 
 ##### 状态解释
+
 配置|说明
 ---|---
 down|当前的server暂时不参与负载均衡
@@ -375,6 +375,7 @@ fail_timeout|经过max_fails 失败后，服务暂停的时间
 max_conns|限制最大的接收的连接数
 
 ##### 调度算法
+
 配置|说明
 ---|---
 轮询|按时间顺序逐一分配到不停的后端服务器
