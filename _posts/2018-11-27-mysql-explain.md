@@ -7,6 +7,7 @@ header-style: text
 tags:
   - Mysql
   - explain
+  - sql优化
 ---
 
 <a href="https://www.cnblogs.com/xuanzhi201111/p/4175635.html" target="_blank">原文地址</a>
@@ -118,3 +119,107 @@ key列显示MySQL实际决定使用的键（索引）
 - EXPLAIN不能显示MySQL在执行查询时所作的优化工作
 - 部分统计信息是估算的，并非精确值
 - EXPALIN只能解释SELECT操作，其他操作要重写为SELECT后查看执行计划。
+
+
+#### 优化order by 语句
+
+MySQL的排序方式
+
+优化order by语句就不得不了解mysql的排序方式。
+
+- 第一种通过有序索引返回数据，这种方式的extra显示为Using Index,不需要额外的排序，操作效率较高。
+- 第二种是对返回的数据进行排序，也就是通常看到的Using filesort，filesort是通过相应的排序算法，将数据放在sort_buffer_size系统变量设置的内存排序区中进行排序，如果内存装载不下，它就会将磁盘上的数据进行分块，再对各个数据块进行排序，然后将各个块合并成有序的结果集。
+
+##### filesort的优化
+
+了解了MySQL排序的方式，优化目标就清晰了：尽量减少额外的排序，通过索引直接返回有序数据。where条件和order by使用相同的索引。
+
+- 创建合适的索引减少filesort的出现。
+- 查询时尽量只使用必要的字段，select 具体字段的名称，而不是select * 选择所有字段，这样可以减少排序区的使用，提高SQL性能。
+
+##### 优化group by 语句
+
+为什么order by后面不能跟group by ?
+
+事实上，MySQL在所有的group by 后面隐式的加了order by ，也就是说group by语句的结果会默认进行排序。
+
+如果你要在order by后面加group by ，那结果执行的SQL是不是这样：select * from tb order by … group by … order by … ？ 这不是搞笑吗？
+
+禁止排序
+
+既然知道问题了，那么就容易优化了，如果查询包括group by但又不关心结果集的顺序，而这种默认排序又导致了需要文件排序，则可以指定order by null 禁止排序。
+
+例如：
+```
+select * from tb group by name order by null;
+```
+
+##### 优化limit 分页
+
+一个非常常见又非常头痛的场景：‘limit 1000,20’。
+
+这时MySQL需要查询1020条记录然后只返回最后20条，前面的1000条都将被抛弃，这样的代价非常高。如果所有页面的访问频率都相同，那么这样的查询平均需要访问半个表的数据。
+
+第一种思路 在索引上分页
+
+在索引上完成分页操作，最后根据主键关联回原表查询所需要的其他列的内容。
+
+例如：
+```
+SELECT * FROM tb_user LIMIT 1000,10
+```
+
+可以优化成这样：
+```
+SELECT * FROM tb_user u
+INNER JOIN (SELECT id FROM tb_user LIMIT 1000,10) AS b ON b.id=u.id
+```
+
+第二种思路 将limit转换成位置查询
+
+这种思路需要加一个参数来辅助，标记分页的开始位置：
+```
+SELECT * FROM tb_user WHERE id > 1000 LIMIT 10
+```
+
+##### 优化子查询
+
+子查询，也就是查询中有查询，常见的是where后面跟一个括号里面又是一条查询sql
+
+尽可能的使用join关联查询来代替子查询。
+
+当然 这不是绝对的，比如某些非常简单的子查询就比关联查询效率高，事实效果如何还要看执行计划。
+
+只能说大部分的子查询都可以优化成Join关联查询。
+
+改变执行计划
+
+##### 提高索引优先级
+
+use index 可以让MySQL去参考指定的索引，但是无法强制MySQL去使用这个索引，当MySQL觉得这个索引效率太差，它宁愿去走全表扫描。。。
+```
+SELECT * FROM tb_user USE INDEX (user_name)
+```
+
+注意：必须是索引，不能是普通字段，（亲测主键也不行）。
+
+##### 忽略索引
+
+ignore index 可以让MySQL忽略一个索引
+```
+SELECT * FROM tb_user IGNORE INDEX (user_name) WHERE user_name="张学友"
+```
+
+##### 强制使用索引
+
+使用了force index 之后 尽管效率非常低，MySQL也会照你的话去执行
+```
+SELECT * FROM tb_user FORCE INDEX (user_name) WHERE user_name="张学友"
+```
+
+查看执行计划时建议依次观察以下几个要点：
+
+- SQL内部的执行顺序。
+- 查看select的查询类型。
+- 实际有没有使用索引。
+- Extra描述信息
