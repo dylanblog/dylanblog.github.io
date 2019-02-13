@@ -10,7 +10,7 @@ tags:
   - @Value
 ---
 
-````java
+```java
 package config;
 
 import org.apache.commons.io.IOUtils;
@@ -78,3 +78,4 @@ public class SpringConfig {
         }
     }
 }
+```
