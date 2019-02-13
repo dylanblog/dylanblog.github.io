@@ -1,14 +1,15 @@
 ---
 layout: post
-title: "@Value 表达式"
+title: "Value 表达式"
 subtitle: ''
 author: "DylanYu"
 header-style: text
 tags:
   - Spring
   - Springboot
-  - @Value
+  - Value
 ---
+
 
 ```java
 package config;
